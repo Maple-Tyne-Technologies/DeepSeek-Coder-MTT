@@ -1,0 +1,23 @@
+name: Auto Update Code on WSL2
+
+on:
+  push:
+    branches:
+      - main  # Change this if needed
+  workflow_dispatch:  # Allows manual triggering
+
+jobs:
+  update-wsl2:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: SSH into WSL2 and Update Code
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.WSL2_HOST }}
+          username: ${{ secrets.WSL2_USER }}
+          key: ${{ secrets.WSL2_SSH_KEY }}
+          script: |
+            cd ~/your-project-folder
+            git pull origin main
+            ./run-your-script.sh  # Modify this to restart services if needed
